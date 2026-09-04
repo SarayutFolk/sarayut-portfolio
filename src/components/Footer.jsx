@@ -1,4 +1,4 @@
-import { FiGithub, FiLinkedin, FiMail, FiHeart } from 'react-icons/fi';
+import { FiGithub, FiLinkedin, FiMail } from 'react-icons/fi';
 
 export default function Footer() {
   return (
@@ -37,10 +37,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <p className="flex items-center gap-1 text-sm text-text-faint">
-            Built with React & Tailwind
-            <FiHeart size={14} className="text-accent" />
-          </p>
+          
         </div>
       </div>
     </footer>
