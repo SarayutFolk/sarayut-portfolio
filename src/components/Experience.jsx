@@ -4,7 +4,7 @@ import { FiBriefcase, FiCalendar } from 'react-icons/fi';
 const experiences = [
   {
     company: 'Krungthai Card Public Company Limited',
-    role: 'Junior Developer',
+    role: 'Developer',
     team: 'Internal Controlling & Monitoring',
     duration: 'June 2026 - Present',
     type: 'Permanent',
@@ -19,7 +19,7 @@ const experiences = [
   },
   {
     company: 'MCR Consulting Co. Ltd',
-    role: 'Junior Developer',
+    role: 'Developer',
     team: 'Technical',
     duration: 'Mar 2025 - May 2026',
     type: 'Permanent',

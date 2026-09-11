@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiGithub, FiLinkedin, FiMail, FiMapPin, FiDownload, FiArrowDown,
 } from 'react-icons/fi';
-import folkImg from '../assets/folk-img.jpg';
+import Profile1 from '../assets/Profile1.jpg';
+import Profile2 from '../assets/Profile2.jpg';
+import Profile3 from '../assets/Profile3.jpg';
 import ResumePdf from '../assets/Resume.pdf';
+
+const profileImages = [Profile1, Profile2, Profile3];
 
 function GridPattern() {
   return (
@@ -49,6 +53,70 @@ function Spotlight() {
   );
 }
 
+function ProfileCarousel() {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % profileImages.length), 3000);
+    return () => clearInterval(id);
+  }, [paused]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6 }}
+      className="relative mx-auto w-64 sm:w-72"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-tr from-accent/40 via-glow/35 to-fuchsia-500/25 blur-xl opacity-40 animate-pulse" />
+      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-tr from-accent/35 via-glow/25 to-transparent opacity-70" />
+
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-secondary/95 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl">
+        <div className="relative aspect-square overflow-hidden rounded-[1.4rem]">
+          <AnimatePresence initial={false}>
+<motion.img
+              key={index}
+              src={profileImages[index]}
+              alt="Sarayut Thanakham"
+              initial={{ opacity: 0, scale: 1.08 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="absolute inset-0 h-full w-full object-cover [filter:brightness(0.94)_saturate(1.15)_contrast(1.05)]"
+              decoding="async"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-accent/25 via-transparent to-glow/20" />
+            <div className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_55%,rgba(10,10,15,0.35))]" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent px-5 pb-4 pt-12">
+              <h3 className="text-lg font-bold text-white">Sarayut Thanakham</h3>
+              <p className="text-sm text-white/80">Developer</p>
+            </div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <div className="mt-5 flex items-center justify-center gap-2">
+        {profileImages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            aria-label={`Profile ${i + 1}`}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              i === index
+                ? 'w-6 bg-gradient-to-r from-accent to-glow'
+                : 'w-2 bg-text-faint/40 hover:bg-text-muted'
+            }`}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Hero() {
   return (
     <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden bg-primary pt-20">
@@ -64,19 +132,7 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
         <div className="mb-8">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="relative mx-auto inline-block"
-          >
-            <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-accent via-glow to-fuchsia-500 blur opacity-60 animate-pulse" />
-            <img
-              src={folkImg}
-              alt="Sarayut Thanakham"
-              className="relative h-40 w-40 sm:h-48 sm:w-48 rounded-full border-4 border-border object-cover"
-            />
-          </motion.div>
+          <ProfileCarousel />
         </div>
 
         <motion.p
@@ -106,7 +162,7 @@ export default function Hero() {
           className="mb-6 text-xl font-light sm:text-2xl md:text-3xl"
         >
           <span className="bg-gradient-to-r from-accent via-glow to-fuchsia-500 bg-clip-text text-transparent">
-            Computer Science Developer
+            Developer
           </span>
         </motion.h2>
 
@@ -116,7 +172,7 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="mx-auto mb-10 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base"
         >
-          Software Developer with experience in Oracle Database, PL/SQL, Microsoft 365,
+          Developer with experience in Oracle Database, PL/SQL, Microsoft 365,
           and Process Automation. Skilled in developing automation solutions to improve
           operational processes and monitoring workflows.
         </motion.p>

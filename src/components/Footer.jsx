@@ -9,7 +9,7 @@ export default function Footer() {
             <a href="#home" className="text-2xl font-bold text-accent">
               ST<span className="text-text">.</span>
             </a>
-            <p className="mt-1 text-sm text-text-faint">Computer Science Developer</p>
+            <p className="mt-1 text-sm text-text-faint">Developer</p>
           </div>
 
           <div className="flex items-center gap-6">

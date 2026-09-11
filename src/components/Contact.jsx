@@ -8,17 +8,36 @@ export default function Contact() {
     email: '',
     message: '',
   });
+  const [status, setStatus] = useState('idle');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const mailtoLink = `mailto:folk446@gmail.com?subject=Portfolio Contact - ${formData.name}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
-    )}`;
-    window.location.href = mailtoLink;
+    setStatus('sending');
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/folk446@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `Portfolio Contact - ${formData.name}`,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
   };
 
   const contactItems = [
@@ -148,14 +167,25 @@ export default function Contact() {
               </div>
               <button
                 type="submit"
-                className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-accent to-glow px-8 py-3 font-semibold text-white shadow-lg shadow-accent/25 transition-transform hover:scale-[1.02]"
+                disabled={status === 'sending'}
+                className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-accent to-glow px-8 py-3 font-semibold text-white shadow-lg shadow-accent/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent bg-[length:200%_100%] animate-shimmer" />
                 <span className="relative flex items-center justify-center gap-2">
                   <FiSend size={18} />
-                  Send Message
+                  {status === 'sending' ? 'Sending...' : 'Send Message'}
                 </span>
               </button>
+              {status === 'success' && (
+                <p className="text-center text-sm font-medium text-emerald-400">
+                  Message sent! Thank you for reaching out. I'll get back to you soon.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="text-center text-sm font-medium text-red-400">
+                  Something went wrong. Please try again or email me directly.
+                </p>
+              )}
             </form>
           </motion.div>
         </div>

@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import {
   SiPython, SiJavascript, SiTailwindcss, SiGithub, SiPostman,
 } from 'react-icons/si';
-import { FiDatabase, FiTerminal, FiCode, FiCloud, FiMonitor, FiGrid, FiFileText, FiCheckCircle } from 'react-icons/fi';
+import { FiDatabase, FiTerminal, FiCode, FiCloud, FiMonitor, FiGrid, FiFileText, FiCheckCircle, FiNavigation2 } from 'react-icons/fi';
+import { TbSql } from 'react-icons/tb';
 
 const categories = [
   {
@@ -29,6 +30,8 @@ const categories = [
       { name: 'GitHub', icon: <SiGithub /> },
       { name: 'Postman', icon: <SiPostman /> },
       { name: 'VS Code', icon: <FiCode /> },
+      { name: 'SQL Developer', icon: <TbSql /> },
+      { name: 'SQL Navigator', icon: <FiNavigation2 /> },
     ],
   },
   {

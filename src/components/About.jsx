@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { FiCode, FiDatabase, FiTool, FiZap } from 'react-icons/fi';
+import { FiCode, FiDatabase, FiTool, FiZap, FiUser, FiBriefcase, FiMail, FiPhone, FiMapPin, FiGlobe, FiGithub, FiLinkedin } from 'react-icons/fi';
+import Profile1 from '../assets/Profile1.jpg';
 
 const highlights = [
   { icon: <FiCode />, label: 'Automation' },
@@ -9,12 +10,17 @@ const highlights = [
 ];
 
 const quickInfo = [
-  { label: 'Name', value: 'Sarayut Thanakham' },
-  { label: 'Title', value: 'Computer Science Developer' },
-  { label: 'Email', value: 'folk446@gmail.com' },
-  { label: 'Phone', value: '083-473-3264' },
-  { label: 'Location', value: 'Bangkok, Thailand' },
-  { label: 'Languages', value: 'Thai, English' },
+  { label: 'Name', value: 'Sarayut Thanakham', icon: <FiUser />, href: null },
+  { label: 'Role', value: 'Developer', icon: <FiBriefcase />, href: null },
+  { label: 'Email', value: 'folk446@gmail.com', icon: <FiMail />, href: 'mailto:folk446@gmail.com' },
+  { label: 'Phone', value: '083-473-3264', icon: <FiPhone />, href: 'tel:0834733264' },
+  { label: 'Location', value: 'Bangkok, Thailand', icon: <FiMapPin />, href: null },
+  { label: 'Languages', value: 'Thai, English', icon: <FiGlobe />, href: null },
+];
+
+const socialLinks = [
+  { icon: <FiGithub />, href: 'https://github.com/SarayutFolk', label: 'GitHub' },
+  { icon: <FiLinkedin />, href: 'https://www.linkedin.com/in/sarayut-thanakham-802a962b6', label: 'LinkedIn' },
 ];
 
 const fadeUp = {
@@ -51,7 +57,7 @@ export default function About() {
             className="space-y-6"
           >
             <p className="text-lg leading-relaxed text-text-secondary">
-              Software Developer with experience in Oracle Database, PL/SQL, Microsoft 365,
+              Developer with experience in Oracle Database, PL/SQL, Microsoft 365,
               and Process Automation. Skilled in developing automation solutions using Python,
               Power Automate Cloud, Microsoft Access, and Batch Script to improve operational
               processes, data processing, and monitoring workflows.
@@ -86,13 +92,56 @@ export default function About() {
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="rounded-2xl border border-border bg-surface p-8 backdrop-blur-xl"
           >
-            <h3 className="mb-6 text-xl font-semibold text-text">Quick Info</h3>
+            <div className="mb-6 flex items-center gap-4">
+              <img
+                src={Profile1}
+                alt="Sarayut Thanakham"
+                loading="lazy"
+                decoding="async"
+                className="h-16 w-16 rounded-2xl border border-border object-cover"
+              />
+              <div>
+                <h3 className="text-xl font-semibold text-text">Quick Info</h3>
+                <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  </span>
+                  <span className="text-xs font-medium text-emerald-300">Open to Work</span>
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-4">
               {quickInfo.map((item, i) => (
-                <div key={i} className="flex justify-between border-b border-border pb-2">
-                  <span className="text-sm text-text-faint">{item.label}</span>
-                  <span className="text-sm font-medium text-text-secondary">{item.value}</span>
+                <div key={i} className="flex items-center justify-between border-b border-border pb-3 last:border-b-0 last:pb-0">
+                  <span className="flex items-center gap-2 text-sm text-text-faint">
+                    <span className="text-accent">{item.icon}</span>
+                    {item.label}
+                  </span>
+                  {item.href ? (
+                    <a href={item.href} className="text-sm font-medium text-text-secondary transition-colors hover:text-accent">
+                      {item.value}
+                    </a>
+                  ) : (
+                    <span className="text-sm font-medium text-text-secondary">{item.value}</span>
+                  )}
                 </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex gap-3">
+              {socialLinks.map((s, i) => (
+                <a
+                  key={i}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-accent transition-all duration-300 hover:border-accent/40 hover:bg-accent/10"
+                >
+                  {s.icon}
+                </a>
               ))}
             </div>
           </motion.div>
