@@ -93,7 +93,7 @@ function ProfileCarousel() {
             <div className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_55%,rgba(10,10,15,0.35))]" />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent px-5 pb-4 pt-12">
               <h3 className="text-lg font-bold text-white">Sarayut Thanakham</h3>
-              <p className="text-sm text-white/80">Developer</p>
+              <p className="text-sm text-white/80">Software Developer</p>
             </div>
           </AnimatePresence>
         </div>
@@ -162,7 +162,7 @@ export default function Hero() {
           className="mb-6 text-xl font-light sm:text-2xl md:text-3xl"
         >
           <span className="bg-gradient-to-r from-accent via-glow to-fuchsia-500 bg-clip-text text-transparent">
-            Developer
+            Software Developer
           </span>
         </motion.h2>
 
@@ -172,9 +172,9 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="mx-auto mb-10 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base"
         >
-          Developer with experience in Oracle Database, PL/SQL, Microsoft 365,
-          and Process Automation. Skilled in developing automation solutions to improve
-          operational processes and monitoring workflows.
+          Software Developer with experience in Oracle Database and PL/SQL on Oracle
+          E-Business Suite, Python-based automation integrated with enterprise systems,
+          and front-end development with React, Next.js, and Tailwind CSS.
         </motion.p>
 
         <motion.div

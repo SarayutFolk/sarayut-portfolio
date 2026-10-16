@@ -1,44 +1,47 @@
 import { motion } from 'framer-motion';
-import { FiBriefcase, FiCalendar } from 'react-icons/fi';
+import { FiBriefcase, FiCalendar, FiTool } from 'react-icons/fi';
 
 const experiences = [
   {
     company: 'Krungthai Card Public Company Limited',
-    role: 'Developer',
+    role: 'Junior Developer',
     team: 'Internal Controlling & Monitoring',
     duration: 'June 2026 - Present',
     type: 'Permanent',
+    tools: 'Python, VBA, Batch Script',
     accent: 'from-blue-500 to-indigo-500',
     responsibilities: [
-      'Developed automation tools using Python, Power Automate Cloud, and Microsoft 365',
-      'Automated data processing and workflow for operational monitoring',
-      'Developed data processing solutions using Microsoft Access and SQL',
-      'Created automated alert and notification workflows',
-      'Supported monitoring, reporting, and process improvement',
+      'Automated approximately 15 recurring reports: built Batch scripts to retrieve text and Excel files from SharePoint paths, applied data conditioning and queries in Microsoft Access, and wrote VBA procedures triggered via VBS and Windows Task Scheduler, saving about 20 minutes of manual work per report',
+      'Built Python (Selenium) scripts to extract data from the company core system for report conditions',
+      'Built Power Automate flows to store processed output in SharePoint and notify relevant business units to verify the data',
+      'Developed Power BI dashboards using SharePoint lists as the data source for internal monitoring',
     ],
   },
   {
     company: 'MCR Consulting Co. Ltd',
-    role: 'Developer',
+    role: 'Junior Developer',
     team: 'Technical',
     duration: 'Mar 2025 - May 2026',
     type: 'Permanent',
+    tools: null,
     accent: 'from-fuchsia-500 to-purple-500',
     responsibilities: [
-      'Developed SQL/PLSQL programs for Oracle Database',
-      'Supported Oracle E-Business Suite (AR, AP, FA, GL, PO, PR, and HR)',
+      'Developed SQL/PL-SQL programs for Oracle Database',
+      'Supported Oracle E-Business Suite (AR, AP, FA, GL, PO, PR and HR)',
       'Created reports and BI Publisher XML reports',
       'Maintained Value Sets and Flexfields',
       'Assisted with production issue resolution',
       'Supported testing and system documentation',
+      'Training users for PL/SQL programming language for Oracle Database',
     ],
   },
   {
     company: 'Bangkok MSP Company Limited',
-    role: 'SOC Analyst (T1)',
-    team: 'Security Operations Center',
+    role: 'SOC (T1)',
+    team: 'Security Operations Center (SOC)',
     duration: 'August 2024 - Feb 2025',
     type: 'Permanent',
+    tools: null,
     accent: 'from-emerald-500 to-teal-500',
     responsibilities: [
       'Monitored and analyzed security alerts using SIEM',
@@ -49,10 +52,11 @@ const experiences = [
   },
   {
     company: 'We Wasana D Company Limited',
-    role: 'Front-end Developer (Intern)',
+    role: 'Front-end Developer',
     team: 'Developer',
     duration: 'June 2022 - July 2022',
     type: 'Internship',
+    tools: 'Next.js, React, Tailwind CSS',
     accent: 'from-amber-500 to-orange-500',
     responsibilities: [
       'Responsive Web Design',
@@ -60,8 +64,6 @@ const experiences = [
       'Front-end Architecture Design',
       'Performance Optimization',
       'Component-Based Development',
-      'Problem Solving and Debugging',
-      'Team Collaboration and Communication',
     ],
   },
 ];
@@ -119,6 +121,9 @@ export default function Experience() {
                   <div className="relative mb-4 flex flex-wrap gap-4 text-sm text-text-muted">
                     <span className="flex items-center gap-1"><FiBriefcase size={14} /> {exp.team}</span>
                     <span className="flex items-center gap-1"><FiCalendar size={14} /> {exp.duration}</span>
+                    {exp.tools && (
+                      <span className="flex items-center gap-1"><FiTool size={14} /> {exp.tools}</span>
+                    )}
                   </div>
 
                   <ul className="relative space-y-2">

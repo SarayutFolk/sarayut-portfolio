@@ -11,11 +11,11 @@ const highlights = [
 
 const quickInfo = [
   { label: 'Name', value: 'Sarayut Thanakham', icon: <FiUser />, href: null },
-  { label: 'Role', value: 'Developer', icon: <FiBriefcase />, href: null },
+  { label: 'Role', value: 'Software Developer', icon: <FiBriefcase />, href: null },
   { label: 'Email', value: 'folk446@gmail.com', icon: <FiMail />, href: 'mailto:folk446@gmail.com' },
   { label: 'Phone', value: '083-473-3264', icon: <FiPhone />, href: 'tel:0834733264' },
   { label: 'Location', value: 'Bangkok, Thailand', icon: <FiMapPin />, href: null },
-  { label: 'Languages', value: 'Thai, English', icon: <FiGlobe />, href: null },
+  { label: 'Languages', value: 'Thai (Native), English (Intermediate)', icon: <FiGlobe />, href: null },
 ];
 
 const socialLinks = [
@@ -57,15 +57,14 @@ export default function About() {
             className="space-y-6"
           >
             <p className="text-lg leading-relaxed text-text-secondary">
-              Developer with experience in Oracle Database, PL/SQL, Microsoft 365,
-              and Process Automation. Skilled in developing automation solutions using Python,
-              Power Automate Cloud, Microsoft Access, and Batch Script to improve operational
-              processes, data processing, and monitoring workflows.
+              Software Developer with experience in Oracle Database and PL/SQL on Oracle
+              E-Business Suite, Python-based automation integrated with enterprise systems,
+              and front-end development with React, Next.js, and Tailwind CSS.
             </p>
             <p className="text-lg leading-relaxed text-text-secondary">
-              Experienced in both application development and system support, with a strong
-              interest in Automation, RPA, and Process Improvement. I enjoy building tools
-              that make work more efficient and reliable.
+              Built tools that automated about 15 recurring reports, saving around 20 minutes
+              of manual work per report. Experienced in both application development and system
+              support, with a strong interest in automation and process improvement.
             </p>
 
             <div className="grid grid-cols-2 gap-4 pt-4">

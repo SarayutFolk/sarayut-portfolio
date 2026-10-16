@@ -43,7 +43,7 @@ export default function Contact() {
   const contactItems = [
     { icon: <FiMail />, label: 'Email', value: 'folk446@gmail.com', href: 'mailto:folk446@gmail.com' },
     { icon: <FiPhone />, label: 'Phone', value: '083-473-3264', href: 'tel:0834733264' },
-    { icon: <FiMapPin />, label: 'Address', value: 'Bangkok, Thailand', href: null },
+    { icon: <FiMapPin />, label: 'Location', value: 'Bangkok, Thailand', href: null },
   ];
 
   const inputClasses =

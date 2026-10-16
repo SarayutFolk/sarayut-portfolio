@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import {
   SiPython, SiJavascript, SiTailwindcss, SiGithub, SiPostman,
 } from 'react-icons/si';
-import { FiDatabase, FiTerminal, FiCode, FiCloud, FiMonitor, FiGrid, FiFileText, FiCheckCircle, FiNavigation2 } from 'react-icons/fi';
-import { TbSql } from 'react-icons/tb';
+import { FiDatabase, FiTerminal, FiCode, FiCloud, FiMonitor, FiGrid, FiCheckCircle, FiGitBranch, FiClock, FiList } from 'react-icons/fi';
+import { BsBarChart } from 'react-icons/bs';
 
 const categories = [
   {
@@ -11,13 +11,13 @@ const categories = [
     description: 'Languages & scripting',
     accent: 'from-blue-500 to-indigo-500',
     skills: [
-      { name: 'Python', icon: <SiPython /> },
+      { name: 'Python (Selenium)', icon: <SiPython /> },
       { name: 'SQL / PL-SQL', icon: <FiDatabase /> },
-      { name: 'JavaScript', icon: <SiJavascript /> },
       { name: 'Batch Script', icon: <FiTerminal /> },
       { name: 'VBA / VBS', icon: <FiCode /> },
+      { name: 'JavaScript', icon: <SiJavascript /> },
+      { name: 'CSS / Tailwind CSS', icon: <SiTailwindcss /> },
       { name: 'HTML', icon: <FiCode /> },
-      { name: 'CSS / Tailwind', icon: <SiTailwindcss /> },
     ],
   },
   {
@@ -26,12 +26,12 @@ const categories = [
     accent: 'from-fuchsia-500 to-purple-500',
     skills: [
       { name: 'Power Automate Cloud', icon: <FiCloud /> },
-      { name: 'Selenium', icon: <SiPython /> },
+      { name: 'Windows Task Scheduler', icon: <FiClock /> },
+      { name: 'BI Publisher', icon: <BsBarChart /> },
+      { name: 'Git / GitKraken', icon: <FiGitBranch /> },
       { name: 'GitHub', icon: <SiGithub /> },
+      { name: 'Visual Studio Code', icon: <FiCode /> },
       { name: 'Postman', icon: <SiPostman /> },
-      { name: 'VS Code', icon: <FiCode /> },
-      { name: 'SQL Developer', icon: <TbSql /> },
-      { name: 'SQL Navigator', icon: <FiNavigation2 /> },
     ],
   },
   {
@@ -41,9 +41,9 @@ const categories = [
     skills: [
       { name: 'Microsoft 365', icon: <FiMonitor /> },
       { name: 'Microsoft Access', icon: <FiGrid /> },
-      { name: 'SharePoint', icon: <FiFileText /> },
+      { name: 'SharePoint Lists', icon: <FiList /> },
       { name: 'Oracle Database', icon: <FiDatabase /> },
-      { name: 'BI Publisher', icon: <FiDatabase /> },
+      { name: 'Oracle E-Business Suite', icon: <FiDatabase /> },
     ],
   },
 ];

@@ -1,18 +1,18 @@
 import { motion } from 'framer-motion';
-import { FiAward, FiBookOpen } from 'react-icons/fi';
+import { FiBookOpen } from 'react-icons/fi';
 
 const education = [
   {
     school: 'Srinakharinwirot University',
-    degree: 'Bachelor of Science',
+    degree: 'Bachelor of Computer Science',
     department: 'Department of Computer Science',
     duration: '2019 - 2022',
-    gpax: '3.24',
+    gpax: null,
     accent: 'from-blue-500 to-indigo-500',
   },
   {
     school: 'Chiang Rai Municipality School 6',
-    degree: 'Science and Mathematics Program',
+    degree: 'Science and Mathematics',
     department: '',
     duration: '2016 - 2018',
     gpax: '3.50',
@@ -67,10 +67,6 @@ export default function Education() {
 
               <div className="relative flex items-center justify-between border-t border-border pt-4">
                 <span className="text-sm text-text-muted">{edu.duration}</span>
-                <div className="flex items-center gap-1.5">
-                  <FiAward size={14} className="text-accent" />
-                  <span className="text-sm font-semibold text-text">GPAX {edu.gpax}</span>
-                </div>
               </div>
             </motion.div>
           ))}

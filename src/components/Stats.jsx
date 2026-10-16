@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, animate, useInView } from 'framer-motion';
-import { FiBriefcase, FiCode, FiDatabase } from 'react-icons/fi';
+import { FiBriefcase, FiZap, FiDatabase } from 'react-icons/fi';
 
 function Counter({ value, suffix }) {
   const ref = useRef(null);
@@ -34,10 +34,10 @@ const stats = [
     accent: 'from-blue-500 to-indigo-500',
   },
   {
-    icon: <FiCode />,
-    value: 10,
+    icon: <FiZap />,
+    value: 15,
     suffix: '+',
-    label: 'Technologies Used',
+    label: 'Reports Automated',
     accent: 'from-emerald-500 to-teal-500',
   },
   {
