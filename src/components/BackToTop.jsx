@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import {
+  motion, AnimatePresence, useScroll, useMotionValueEvent,
+} from 'framer-motion';
 import { FiArrowUp } from 'react-icons/fi';
+
+const EASE = [0.22, 1, 0.36, 1];
 
 export default function BackToTop() {
   const [show, setShow] = useState(false);
+  const { scrollY, scrollYProgress } = useScroll();
 
-  useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > 400);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  useMotionValueEvent(scrollY, 'change', (y) => setShow(y > 400));
 
   return (
     <AnimatePresence>
@@ -18,11 +19,24 @@ export default function BackToTop() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 16 }}
+          transition={{ duration: 0.5, ease: EASE }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Back to top"
-          className="fixed bottom-6 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-accent to-glow text-white shadow-lg shadow-accent/25 transition-transform hover:scale-110"
+          className="group fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-text shadow-[0_0_0_1px_var(--rule)] transition-colors duration-300 hover:bg-text hover:text-primary"
         >
-          <FiArrowUp size={20} />
+          {/* Ring fills with reading progress */}
+          <svg className="absolute inset-0 -rotate-90" viewBox="0 0 48 48" aria-hidden="true">
+            <motion.circle
+              cx="24"
+              cy="24"
+              r="23"
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth="1.5"
+              style={{ pathLength: scrollYProgress }}
+            />
+          </svg>
+          <FiArrowUp size={18} className="relative transition-transform duration-500 ease-editorial group-hover:-translate-y-0.5" />
         </motion.button>
       )}
     </AnimatePresence>

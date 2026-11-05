@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { FiBookOpen } from 'react-icons/fi';
+import { Reveal, SectionHeading } from './Motion';
 
 const education = [
   {
@@ -8,7 +8,6 @@ const education = [
     department: 'Department of Computer Science',
     duration: '2019 - 2022',
     gpax: null,
-    accent: 'from-blue-500 to-indigo-500',
   },
   {
     school: 'Chiang Rai Municipality School 6',
@@ -16,59 +15,37 @@ const education = [
     department: '',
     duration: '2016 - 2018',
     gpax: '3.50',
-    accent: 'from-emerald-500 to-teal-500',
   },
 ];
 
 export default function Education() {
   return (
-    <section id="education" className="relative overflow-hidden py-24 bg-primary">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 right-1/4 h-80 w-80 rounded-full bg-accent/10 blur-3xl animate-aurora" />
-        <div className="absolute bottom-0 left-1/4 h-80 w-80 rounded-full bg-glow/10 blur-3xl animate-aurora [animation-delay:3s]" />
-      </div>
+    <section id="education" className="relative py-24 md:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeading index="04" eyebrow="Education" title="Academic" emphasis="Background" />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
-        >
-          <p className="mb-2 font-mono text-sm uppercase tracking-widest text-accent">Education</p>
-          <h2 className="text-3xl font-bold text-text sm:text-4xl">
-            Academic <span className="bg-gradient-to-r from-accent to-glow bg-clip-text text-transparent">Background</span>
-          </h2>
-        </motion.div>
-
-        <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
+        <div className="grid gap-y-14 md:grid-cols-12 md:gap-x-6">
           {education.map((edu, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15, duration: 0.6 }}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-8 backdrop-blur-xl transition-all duration-300 hover:border-accent/40"
+            <Reveal
+              key={edu.school}
+              delay={i * 0.12}
+              className={`group md:col-span-6 lg:col-span-5 ${i === 1 ? 'md:mt-24 lg:col-start-8' : ''}`}
             >
-              <div className={`absolute -top-14 -right-14 h-36 w-36 rounded-full bg-gradient-to-br ${edu.accent} opacity-10 blur-3xl transition-opacity group-hover:opacity-25`} />
-
-              <div className={`relative mb-6 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${edu.accent} bg-clip-padding text-white/90 transition-transform group-hover:scale-110`}>
-                <FiBookOpen size={28} />
-              </div>
-
-              <h3 className="relative mb-2 text-lg font-bold text-text">{edu.school}</h3>
-              <p className={`relative mb-1 font-medium bg-gradient-to-r ${edu.accent} bg-clip-text text-transparent`}>{edu.degree}</p>
-              {edu.department && (
-                <p className="relative mb-4 text-sm text-text-muted">{edu.department}</p>
-              )}
-              {!edu.department && <div className="relative mb-4" />}
-
-              <div className="relative flex items-center justify-between border-t border-border pt-4">
-                <span className="text-sm text-text-muted">{edu.duration}</span>
-              </div>
-            </motion.div>
+              <article className="border-t border-text/80 pt-6">
+                <div className="flex items-center justify-between">
+                  <span className="label-mono text-text-muted">{edu.duration}</span>
+                  <FiBookOpen className="text-text-faint transition-all duration-500 ease-editorial group-hover:-translate-y-0.5 group-hover:text-accent" size={18} />
+                </div>
+                <p className="font-display mt-8 text-[clamp(3rem,6vw,4.75rem)] font-light leading-none tracking-[-0.04em] text-text-faint transition-colors duration-500 group-hover:text-text">
+                  {edu.duration.split(' - ')[1]}
+                </p>
+                <h3 className="font-display mt-6 text-2xl leading-snug text-text">{edu.school}</h3>
+                <p className="mt-2 font-display text-lg italic text-accent">{edu.degree}</p>
+                {edu.department && (
+                  <p className="mt-3 text-sm text-text-muted">{edu.department}</p>
+                )}
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
