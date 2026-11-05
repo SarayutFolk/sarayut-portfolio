@@ -1,6 +1,26 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FiMail, FiPhone, FiMapPin, FiSend, FiLinkedin, FiGithub } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiMail, FiPhone, FiMapPin, FiSend, FiLinkedin, FiGithub, FiArrowUpRight } from 'react-icons/fi';
+import { Reveal, SectionHeading } from './Motion';
+
+const EASE = [0.22, 1, 0.36, 1];
+
+function Field({ label, name, index, children }) {
+  return (
+    <div className="group relative">
+      <label htmlFor={name} className="label-mono flex items-center gap-2 text-text-muted transition-colors group-focus-within:text-accent">
+        <span className="text-text-faint">{index}</span>
+        {label}
+      </label>
+      {children}
+      {/* Focus underline grows from the left over the resting hairline */}
+      <span
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-500 ease-editorial group-focus-within:scale-x-100"
+      />
+    </div>
+  );
+}
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -47,91 +67,67 @@ export default function Contact() {
   ];
 
   const inputClasses =
-    'w-full px-4 py-3 rounded-xl border border-border bg-surface text-text placeholder:text-text-faint backdrop-blur transition-colors focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent';
+    'mt-2 w-full border-0 border-b border-rule bg-transparent px-0 py-3 text-lg text-text placeholder:text-text-faint focus:outline-none focus-visible:outline-none';
 
   return (
-    <section id="contact" className="relative overflow-hidden py-24 bg-secondary">
-      <div className="absolute -top-24 left-1/4 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
-      <div className="absolute -bottom-24 right-1/4 h-96 w-96 rounded-full bg-glow/10 blur-3xl" />
+    <section id="contact" className="relative bg-secondary py-24 md:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeading index="05" eyebrow="Contact" title="Get In" emphasis="Touch" />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
-        >
-          <p className="mb-2 font-mono text-sm uppercase tracking-widest text-accent">Contact</p>
-          <h2 className="text-3xl font-bold text-text sm:text-4xl">
-            Get In <span className="bg-gradient-to-r from-accent to-glow bg-clip-text text-transparent">Touch</span>
-          </h2>
-        </motion.div>
-
-        <div className="mx-auto grid max-w-5xl gap-12 md:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <p className="text-lg leading-relaxed text-text-secondary">
+        <div className="grid gap-16 lg:grid-cols-12 lg:gap-6">
+          <Reveal className="space-y-10 lg:col-span-5">
+            <p className="font-display text-2xl font-light leading-snug text-text md:text-[1.75rem]">
               I'm always open to discussing new opportunities, collaborations, or just having a
               chat about technology and automation.
             </p>
 
-            <div className="space-y-6">
-              {contactItems.map((item, i) => (
-                <div key={i} className="group flex items-start gap-4">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-border bg-surface text-accent backdrop-blur transition-colors group-hover:border-accent/40 group-hover:bg-accent/10">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <p className="text-sm text-text-faint">{item.label}</p>
+            <dl className="border-t border-rule">
+              {contactItems.map((item) => (
+                <div key={item.label} className="group flex items-center gap-4 border-b border-rule py-4">
+                  <span className="text-text-faint transition-colors duration-300 group-hover:text-accent">{item.icon}</span>
+                  <dt className="label-mono w-20 text-text-faint">{item.label}</dt>
+                  <dd className="flex-1">
                     {item.href ? (
-                      <a href={item.href} className="font-medium text-text transition-colors hover:text-accent">
+                      <a href={item.href} className="link-draw text-text hover:text-accent">
                         {item.value}
                       </a>
                     ) : (
-                      <p className="font-medium text-text">{item.value}</p>
+                      <span className="text-text">{item.value}</span>
                     )}
-                  </div>
+                  </dd>
                 </div>
               ))}
-            </div>
+            </dl>
 
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-3">
               <a
                 href="https://github.com/SarayutFolk"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-surface text-accent backdrop-blur transition-all duration-300 hover:scale-105 hover:border-accent/40 hover:bg-accent hover:text-white"
+                aria-label="GitHub"
+                className="group inline-flex items-center gap-2 border border-rule px-4 py-2.5 text-sm text-text transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-accent-ink"
               >
-                <FiGithub size={20} />
+                <FiGithub size={17} />
+                <FiArrowUpRight size={14} className="transition-transform duration-500 ease-editorial group-hover:rotate-45" />
               </a>
               <a
                 href="https://www.linkedin.com/in/sarayut-thanakham-802a962b6"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-surface text-accent backdrop-blur transition-all duration-300 hover:scale-105 hover:border-accent/40 hover:bg-accent hover:text-white"
+                aria-label="LinkedIn"
+                className="group inline-flex items-center gap-2 border border-rule px-4 py-2.5 text-sm text-text transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-accent-ink"
               >
-                <FiLinkedin size={20} />
+                <FiLinkedin size={17} />
+                <FiArrowUpRight size={14} className="transition-transform duration-500 ease-editorial group-hover:rotate-45" />
               </a>
             </div>
-          </motion.div>
+          </Reveal>
 
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="rounded-2xl border border-border bg-surface p-8 backdrop-blur-xl"
-          >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="mb-2 block text-sm text-text-muted">Your Name</label>
+          <Reveal delay={0.12} className="lg:col-span-6 lg:col-start-7">
+            <form onSubmit={handleSubmit} className="space-y-10">
+              <Field label="Your Name" name="name" index="01">
                 <input
+                  id="name"
                   type="text"
                   name="name"
                   value={formData.name}
@@ -140,10 +136,10 @@ export default function Contact() {
                   className={inputClasses}
                   placeholder="Your name or Email"
                 />
-              </div>
-              <div>
-                <label className="mb-2 block text-sm text-text-muted">Your Email</label>
+              </Field>
+              <Field label="Your Email" name="email" index="02">
                 <input
+                  id="email"
                   type="email"
                   name="email"
                   value={formData.email}
@@ -152,10 +148,10 @@ export default function Contact() {
                   className={inputClasses}
                   placeholder="Mail@example.com"
                 />
-              </div>
-              <div>
-                <label className="mb-2 block text-sm text-text-muted">Message</label>
+              </Field>
+              <Field label="Message" name="message" index="03">
                 <textarea
+                  id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
@@ -164,30 +160,56 @@ export default function Contact() {
                   className={`${inputClasses} resize-none`}
                   placeholder="Your message..."
                 />
+              </Field>
+
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                <button
+                  type="submit"
+                  disabled={status === 'sending'}
+                  className="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-text px-8 py-4 text-sm font-medium text-primary disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 origin-left scale-x-0 bg-accent transition-transform duration-500 ease-editorial group-hover:scale-x-100 group-disabled:scale-x-0"
+                  />
+                  <span className="relative">{status === 'sending' ? 'Sending...' : 'Send Message'}</span>
+                  <FiSend
+                    size={16}
+                    className={`relative transition-transform duration-500 ease-editorial group-hover:translate-x-1 group-hover:-translate-y-1 ${status === 'sending' ? 'animate-pulse' : ''}`}
+                  />
+                </button>
+
+                <AnimatePresence mode="wait">
+                  {status === 'success' && (
+                    <motion.p
+                      key="success"
+                      role="status"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5, ease: EASE }}
+                      className="max-w-xs text-sm text-moss"
+                    >
+                      Message sent! Thank you for reaching out. I'll get back to you soon.
+                    </motion.p>
+                  )}
+                  {status === 'error' && (
+                    <motion.p
+                      key="error"
+                      role="alert"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5, ease: EASE }}
+                      className="max-w-xs text-sm text-accent"
+                    >
+                      Something went wrong. Please try again or email me directly.
+                    </motion.p>
+                  )}
+                </AnimatePresence>
               </div>
-              <button
-                type="submit"
-                disabled={status === 'sending'}
-                className="group relative w-full overflow-hidden rounded-xl bg-gradient-to-r from-accent to-glow px-8 py-3 font-semibold text-white shadow-lg shadow-accent/25 transition-transform hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent bg-[length:200%_100%] animate-shimmer" />
-                <span className="relative flex items-center justify-center gap-2">
-                  <FiSend size={18} />
-                  {status === 'sending' ? 'Sending...' : 'Send Message'}
-                </span>
-              </button>
-              {status === 'success' && (
-                <p className="text-center text-sm font-medium text-emerald-400">
-                  Message sent! Thank you for reaching out. I'll get back to you soon.
-                </p>
-              )}
-              {status === 'error' && (
-                <p className="text-center text-sm font-medium text-red-400">
-                  Something went wrong. Please try again or email me directly.
-                </p>
-              )}
             </form>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
     </section>

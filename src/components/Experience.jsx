@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { FiBriefcase, FiCalendar, FiTool } from 'react-icons/fi';
+import { Reveal, Stagger, RevealItem, Rule, SectionHeading } from './Motion';
 
 const experiences = [
   {
@@ -9,7 +9,6 @@ const experiences = [
     duration: 'June 2026 - Present',
     type: 'Permanent',
     tools: 'Python, VBA, Batch Script',
-    accent: 'from-blue-500 to-indigo-500',
     responsibilities: [
       'Automated approximately 15 recurring reports: built Batch scripts to retrieve text and Excel files from SharePoint paths, applied data conditioning and queries in Microsoft Access, and wrote VBA procedures triggered via VBS and Windows Task Scheduler, saving about 20 minutes of manual work per report',
       'Built Python (Selenium) scripts to extract data from the company core system for report conditions',
@@ -24,7 +23,6 @@ const experiences = [
     duration: 'Mar 2025 - May 2026',
     type: 'Permanent',
     tools: null,
-    accent: 'from-fuchsia-500 to-purple-500',
     responsibilities: [
       'Developed SQL/PL-SQL programs for Oracle Database',
       'Supported Oracle E-Business Suite (AR, AP, FA, GL, PO, PR and HR)',
@@ -42,7 +40,6 @@ const experiences = [
     duration: 'August 2024 - Feb 2025',
     type: 'Permanent',
     tools: null,
-    accent: 'from-emerald-500 to-teal-500',
     responsibilities: [
       'Monitored and analyzed security alerts using SIEM',
       'Performed initial incident triage and escalation',
@@ -57,7 +54,6 @@ const experiences = [
     duration: 'June 2022 - July 2022',
     type: 'Internship',
     tools: 'Next.js, React, Tailwind CSS',
-    accent: 'from-amber-500 to-orange-500',
     responsibilities: [
       'Responsive Web Design',
       'Single Page Application (SPA) Development',
@@ -70,75 +66,62 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <section id="experience" className="relative overflow-hidden py-24 bg-secondary">
-      <div className="absolute top-1/4 right-0 h-96 w-96 rounded-full bg-glow/10 blur-3xl" />
+    <section id="experience" className="relative bg-secondary py-24 md:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeading index="03" eyebrow="Experience" title="Work" emphasis="History" />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-16 text-center"
-        >
-          <p className="mb-2 font-mono text-sm uppercase tracking-widest text-accent">Experience</p>
-          <h2 className="text-3xl font-bold text-text sm:text-4xl">
-            Work <span className="bg-gradient-to-r from-accent to-glow bg-clip-text text-transparent">History</span>
-          </h2>
-        </motion.div>
-
-        <div className="relative mx-auto max-w-4xl">
-          <div className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-accent via-glow to-transparent md:left-8" />
-
-          <div className="space-y-12">
-            {experiences.map((exp, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="relative pl-12 md:pl-20"
-              >
-                <div className="absolute left-2 top-1 flex h-4 w-4 items-center justify-center md:left-6">
-                  <div className={`h-4 w-4 rounded-full bg-gradient-to-br ${exp.accent}`} />
-                  <div className="absolute h-4 w-4 animate-ping rounded-full bg-accent/30" />
-                </div>
-
-                <div className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-6 backdrop-blur-xl transition-all duration-300 hover:border-accent/40">
-                  <div className={`absolute -top-10 -right-10 h-32 w-32 rounded-full bg-gradient-to-br ${exp.accent} opacity-10 blur-2xl transition-opacity group-hover:opacity-25`} />
-
-                  <div className="relative mb-4 flex flex-wrap items-start justify-between gap-2">
-                    <div>
-                      <h3 className="text-lg font-bold text-text">{exp.company}</h3>
-                      <p className={`font-medium bg-gradient-to-r ${exp.accent} bg-clip-text text-transparent`}>{exp.role}</p>
-                    </div>
-                    <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
+        <ol>
+          {experiences.map((exp, i) => (
+            <li key={exp.company} className="group relative">
+              {i > 0 && <Rule />}
+              <div className="grid gap-8 py-12 md:grid-cols-12 md:gap-6 md:py-16">
+                {/* Meta column — sticks while the long entries scroll past */}
+                <Reveal className="md:col-span-4 lg:col-span-3">
+                  <div className="md:sticky md:top-28">
+                    <span className="font-display block text-6xl font-light leading-none text-text-faint transition-colors duration-500 group-hover:text-accent md:text-7xl">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className="label-mono mt-6 flex items-center gap-2 text-text">
+                      <FiCalendar size={12} className="text-accent" /> {exp.duration}
+                    </p>
+                    <span className="label-mono mt-3 inline-block border border-rule px-2 py-1 text-text-muted">
                       {exp.type}
                     </span>
                   </div>
+                </Reveal>
 
-                  <div className="relative mb-4 flex flex-wrap gap-4 text-sm text-text-muted">
-                    <span className="flex items-center gap-1"><FiBriefcase size={14} /> {exp.team}</span>
-                    <span className="flex items-center gap-1"><FiCalendar size={14} /> {exp.duration}</span>
-                    {exp.tools && (
-                      <span className="flex items-center gap-1"><FiTool size={14} /> {exp.tools}</span>
-                    )}
-                  </div>
+                <div className="md:col-span-8 lg:col-span-8 lg:col-start-5">
+                  <Reveal delay={0.05}>
+                    <h3 className="font-display text-[clamp(1.75rem,3.2vw,2.6rem)] leading-[1.08] tracking-[-0.02em] text-text">
+                      {exp.company}
+                    </h3>
+                    <p className="mt-3 text-lg italic text-accent font-display">{exp.role}</p>
+                    <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-text-muted">
+                      <span className="flex items-center gap-2"><FiBriefcase size={13} /> {exp.team}</span>
+                      {exp.tools && (
+                        <span className="flex items-center gap-2"><FiTool size={13} /> {exp.tools}</span>
+                      )}
+                    </div>
+                  </Reveal>
 
-                  <ul className="relative space-y-2">
-                    {exp.responsibilities.map((r, ri) => (
-                      <li key={ri} className="flex items-start gap-2 text-sm text-text-secondary">
-                        <span className={`mt-1.5 text-xs bg-gradient-to-r ${exp.accent} bg-clip-text text-transparent`}>●</span>
-                        {r}
-                      </li>
+                  <Stagger as="ul" className="mt-8 space-y-3.5" delay={0.15} gap={0.06}>
+                    {exp.responsibilities.map((r) => (
+                      <RevealItem
+                        as="li"
+                        key={r}
+                        y={10}
+                        className="grid grid-cols-[1.5rem_1fr] text-[0.95rem] leading-relaxed text-text-secondary"
+                      >
+                        <span aria-hidden="true" className="mt-[0.65em] h-0.5 w-2.5 bg-accent" />
+                        <span>{r}</span>
+                      </RevealItem>
                     ))}
-                  </ul>
+                  </Stagger>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

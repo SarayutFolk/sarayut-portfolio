@@ -1,3 +1,4 @@
+import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -11,18 +12,24 @@ import BackToTop from './components/BackToTop';
 
 function App() {
   return (
-    <div className="bg-primary min-h-screen">
-      <Navbar />
-      <Hero />
-      <About />
-      <Stats />
-      <Skills />
-      <Experience />
-      <Education />
-      <Contact />
-      <Footer />
-      <BackToTop />
-    </div>
+    // Honour the OS "reduce motion" setting: framer-motion drops transform/layout
+    // animations and keeps simple opacity fades.
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen bg-primary text-text">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <Stats />
+          <Skills />
+          <Experience />
+          <Education />
+          <Contact />
+        </main>
+        <Footer />
+        <BackToTop />
+      </div>
+    </MotionConfig>
   );
 }
 

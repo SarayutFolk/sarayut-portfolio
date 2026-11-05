@@ -1,246 +1,228 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
-  FiGithub, FiLinkedin, FiMail, FiMapPin, FiDownload, FiArrowDown,
+  motion, AnimatePresence, useReducedMotion, useScroll, useTransform,
+} from 'framer-motion';
+import {
+  FiGithub, FiLinkedin, FiMail, FiMapPin, FiDownload, FiArrowDown, FiArrowUpRight,
 } from 'react-icons/fi';
 import Profile1 from '../assets/Profile1.jpg';
 import Profile2 from '../assets/Profile2.jpg';
 import Profile3 from '../assets/Profile3.jpg';
 import ResumePdf from '../assets/Resume.pdf';
+import { MaskText } from './Motion';
 
 const profileImages = [Profile1, Profile2, Profile3];
+const SLIDE_MS = 3000;
+const EASE = [0.22, 1, 0.36, 1];
 
-function GridPattern() {
-  return (
-    <svg
-      className="absolute inset-0 h-full w-full text-text/[0.04] [mask-image:radial-gradient(ellipse_at_center,white,transparent_70%)]"
-      aria-hidden="true"
-    >
-      <defs>
-        <pattern id="hero-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="1" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#hero-grid)" />
-    </svg>
-  );
-}
-
-function Spotlight() {
-  const ref = useRef(null);
-  const [xy, setXY] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const handleMove = (e) => {
-      const rect = el.getBoundingClientRect();
-      setXY({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-    };
-    el.addEventListener('mousemove', handleMove);
-    return () => el.removeEventListener('mousemove', handleMove);
-  }, []);
-
-  return (
-    <div ref={ref} className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-        className="absolute -inset-px opacity-60 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(600px circle at ${xy.x}px ${xy.y}px, rgba(59,130,246,0.15), transparent 60%)`,
-        }}
-      />
-    </div>
-  );
-}
+const enter = (delay) => ({
+  initial: { opacity: 0, y: 18 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.9, ease: EASE, delay },
+});
 
 function ProfileCarousel() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % profileImages.length), 3000);
+    const id = setInterval(() => setIndex((i) => (i + 1) % profileImages.length), SLIDE_MS);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, index]);
+
+  // New portrait wipes up over the previous one (plain crossfade for reduced motion).
+  const slide = reduce
+    ? {
+        initial: { opacity: 0 },
+        animate: { opacity: 1, zIndex: 2 },
+        exit: { opacity: 0, zIndex: 1 },
+      }
+    : {
+        initial: { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.12, zIndex: 2 },
+        animate: { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, zIndex: 2 },
+        exit: { zIndex: 1, scale: 1.04, transition: { duration: 1.1, ease: EASE } },
+      };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6 }}
-      className="relative mx-auto w-64 sm:w-72"
+    <motion.figure
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.1, ease: EASE, delay: 0.25 }}
+      className="group relative mx-auto w-full max-w-sm lg:ml-auto lg:mr-0"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-tr from-accent/40 via-glow/35 to-fuchsia-500/25 blur-xl opacity-40 animate-pulse" />
-      <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-tr from-accent/35 via-glow/25 to-transparent opacity-70" />
+      <div className="relative">
+        {/* Offset keyline behind the frame */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 translate-x-3 translate-y-3 border border-accent/60 transition-transform duration-700 ease-editorial group-hover:translate-x-1.5 group-hover:translate-y-1.5"
+        />
 
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-secondary/95 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl">
-        <div className="relative aspect-square overflow-hidden rounded-[1.4rem]">
+        <div className="relative aspect-[4/5] overflow-hidden bg-surface">
           <AnimatePresence initial={false}>
-<motion.img
+            <motion.img
               key={index}
               src={profileImages[index]}
               alt="Sarayut Thanakham"
-              initial={{ opacity: 0, scale: 1.08 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="absolute inset-0 h-full w-full object-cover [filter:brightness(0.94)_saturate(1.15)_contrast(1.05)]"
+              {...slide}
+              transition={{ duration: 1.1, ease: EASE }}
+              className="absolute inset-0 h-full w-full object-cover [filter:saturate(0.9)_contrast(1.04)]"
               decoding="async"
             />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-accent/25 via-transparent to-glow/20" />
-            <div className="pointer-events-none absolute inset-0 [background:radial-gradient(ellipse_at_center,transparent_55%,rgba(10,10,15,0.35))]" />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent px-5 pb-4 pt-12">
-              <h3 className="text-lg font-bold text-white">Sarayut Thanakham</h3>
-              <p className="text-sm text-white/80">Software Developer</p>
-            </div>
           </AnimatePresence>
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/75 via-black/20 to-transparent px-5 pb-4 pt-16">
+            <h3 className="font-display text-xl text-white">Sarayut Thanakham</h3>
+            <p className="label-mono mt-1 text-white/70">Software Developer</p>
+          </div>
         </div>
       </div>
 
-      <div className="mt-5 flex items-center justify-center gap-2">
-        {profileImages.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setIndex(i)}
-            aria-label={`Profile ${i + 1}`}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              i === index
-                ? 'w-6 bg-gradient-to-r from-accent to-glow'
-                : 'w-2 bg-text-faint/40 hover:bg-text-muted'
-            }`}
-          />
-        ))}
-      </div>
-    </motion.div>
+      <figcaption className="relative mt-8 flex items-center justify-between gap-4">
+        <span className="label-mono text-text-faint">
+          Fig. <span className="text-text">{String(index + 1).padStart(2, '0')}</span> / {String(profileImages.length).padStart(2, '0')}
+        </span>
+        <div className="flex items-center gap-4">
+          {profileImages.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              aria-label={`Profile ${i + 1}`}
+              aria-current={i === index}
+              className="group/dot flex flex-col items-start gap-1.5 py-1"
+            >
+              <span className={`font-mono text-[0.65rem] transition-colors ${i === index ? 'text-text' : 'text-text-faint group-hover/dot:text-text-muted'}`}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="relative block h-px w-8 overflow-hidden bg-rule">
+                {i === index && (
+                  <motion.span
+                    key={`${index}-${paused}`}
+                    className="absolute inset-0 origin-left bg-accent"
+                    initial={{ scaleX: paused ? 1 : 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: paused ? 0 : SLIDE_MS / 1000, ease: 'linear' }}
+                  />
+                )}
+              </span>
+            </button>
+          ))}
+        </div>
+      </figcaption>
+    </motion.figure>
   );
 }
 
+const socials = [
+  { icon: <FiGithub size={18} />, href: 'https://github.com/SarayutFolk', label: 'GitHub', external: true },
+  { icon: <FiLinkedin size={18} />, href: 'https://www.linkedin.com/in/sarayut-thanakham-802a962b6', label: 'LinkedIn', external: true },
+  { icon: <FiMail size={18} />, href: 'mailto:folk446@gmail.com', label: 'Email', external: false },
+];
+
 export default function Hero() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const nameY = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
+  const portraitY = useTransform(scrollYProgress, [0, 1], ['0%', '-8%']);
+
   return (
-    <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden bg-primary pt-20">
-      {/* Animated aurora background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -left-40 h-[32rem] w-[32rem] rounded-full bg-accent/20 blur-3xl animate-aurora" />
-        <div className="absolute top-1/3 -right-40 h-[28rem] w-[28rem] rounded-full bg-glow/20 blur-3xl animate-aurora [animation-delay:2s]" />
-        <div className="absolute -bottom-40 left-1/3 h-[30rem] w-[30rem] rounded-full bg-fuchsia-500/10 blur-3xl animate-aurora [animation-delay:4s]" />
-        <GridPattern />
-        <Spotlight />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primary" />
-      </div>
+    <section
+      id="home"
+      ref={ref}
+      className="relative flex min-h-[100svh] flex-col overflow-hidden pt-28 pb-14 md:pt-32"
+    >
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 grid-cols-12 gap-x-6 gap-y-14 px-5 sm:px-8">
+        <motion.div style={{ y: nameY }} className="col-span-12 flex flex-col lg:col-span-7">
+          <motion.p {...enter(0)} className="label-mono flex items-center gap-3 text-text-muted">
+            <span className="inline-block h-1.5 w-1.5 bg-accent" />
+            Welcome to my portfolio
+          </motion.p>
 
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center">
-        <div className="mb-8">
+          <h1 className="font-display mt-8 text-[clamp(3.6rem,9vw,8.5rem)] font-normal leading-[0.86] tracking-[-0.04em] text-text">
+            <MaskText text="Sarayut" onMount delay={0.1} className="block" />
+            <span className="block pl-[0.55em] font-light italic text-accent">
+              <MaskText text="Thanakham" onMount delay={0.22} />
+            </span>
+          </h1>
+
+          <div className="mt-10 grid gap-8 md:grid-cols-[auto_1fr] md:gap-10">
+            <motion.h2 {...enter(0.45)} className="label-mono whitespace-nowrap pt-1 text-text">
+              Software Developer
+            </motion.h2>
+            <motion.p {...enter(0.55)} className="max-w-xl text-base leading-relaxed text-text-secondary sm:text-[1.0625rem]">
+              Software Developer with experience in Oracle Database and PL/SQL on Oracle
+              E-Business Suite, Python-based automation integrated with enterprise systems,
+              and front-end development with React, Next.js, and Tailwind CSS.
+            </motion.p>
+          </div>
+
+          <motion.div {...enter(0.7)} className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+            <a
+              href="#experience"
+              className="group relative inline-flex items-center gap-3 overflow-hidden bg-text px-7 py-4 text-sm font-medium text-primary"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 origin-left scale-x-0 bg-accent transition-transform duration-500 ease-editorial group-hover:scale-x-100"
+              />
+              <span className="relative">View Experience</span>
+              <FiArrowUpRight className="relative transition-transform duration-500 ease-editorial group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:rotate-45" />
+            </a>
+            <a
+              href={ResumePdf}
+              download="Resume_Sarayut_Thanakham.pdf"
+              className="link-draw inline-flex items-center gap-2 pb-1 text-sm font-medium text-text hover:text-accent"
+            >
+              <FiDownload size={16} />
+              Download Resume
+            </a>
+            <a href="#contact" className="link-draw pb-1 text-sm font-medium text-text-secondary hover:text-accent">
+              Contact Me
+            </a>
+          </motion.div>
+        </motion.div>
+
+        <motion.div style={{ y: portraitY }} className="col-span-12 lg:col-span-5 lg:pt-6">
           <ProfileCarousel />
-        </div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.6 }}
-          className="mb-4 font-mono text-sm tracking-widest text-accent uppercase"
-        >
-          Welcome to my portfolio
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="mb-6 text-4xl font-bold leading-tight sm:text-5xl md:text-7xl"
-        >
-          <span className="bg-gradient-to-r from-text via-text to-text-muted bg-clip-text text-transparent">
-            Sarayut Thanakham
-          </span>
-        </motion.h1>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
-          className="mb-6 text-xl font-light sm:text-2xl md:text-3xl"
-        >
-          <span className="bg-gradient-to-r from-accent via-glow to-fuchsia-500 bg-clip-text text-transparent">
-            Software Developer
-          </span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="mx-auto mb-10 max-w-2xl text-sm leading-relaxed text-text-muted sm:text-base"
-        >
-          Software Developer with experience in Oracle Database and PL/SQL on Oracle
-          E-Business Suite, Python-based automation integrated with enterprise systems,
-          and front-end development with React, Next.js, and Tailwind CSS.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
-        >
-          <a
-            href="#experience"
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-accent to-glow px-8 py-3 font-semibold text-white shadow-lg shadow-accent/25 transition-transform hover:scale-105"
-          >
-            <span
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent bg-[length:200%_100%] animate-shimmer"
-            />
-            <span className="relative">View Experience</span>
-          </a>
-          <a
-            href={ResumePdf}
-            download="Resume_Sarayut_Thanakham.pdf"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-8 py-3 font-semibold text-text backdrop-blur transition-colors hover:border-accent/50 hover:bg-accent/10"
-          >
-            <FiDownload size={18} />
-            Download Resume
-          </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-full px-6 py-3 font-semibold text-text-secondary transition-colors hover:text-accent"
-          >
-            Contact Me
-          </a>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-6"
-        >
-          <a href="https://github.com/SarayutFolk" target="_blank" rel="noopener noreferrer"
-            className="rounded-full border border-border bg-surface p-3 text-text-muted transition-all hover:border-accent/50 hover:text-accent">
-            <FiGithub size={20} />
-          </a>
-          <a href="https://www.linkedin.com/in/sarayut-thanakham-802a962b6" target="_blank" rel="noopener noreferrer"
-            className="rounded-full border border-border bg-surface p-3 text-text-muted transition-all hover:border-accent/50 hover:text-accent">
-            <FiLinkedin size={20} />
-          </a>
-          <a href="mailto:folk446@gmail.com"
-            className="rounded-full border border-border bg-surface p-3 text-text-muted transition-all hover:border-accent/50 hover:text-accent">
-            <FiMail size={20} />
-          </a>
-          <span className="flex items-center gap-1 text-sm text-text-muted">
-            <FiMapPin size={16} /> Bangkok, Thailand
-          </span>
         </motion.div>
       </div>
 
-      <motion.a
-        href="#about"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-text-muted transition-colors hover:text-accent"
+      <motion.div
+        {...enter(0.9)}
+        className="relative z-10 mx-auto mt-14 w-full max-w-7xl px-5 sm:px-8"
       >
-        <FiArrowDown size={24} className="animate-bounce" />
-      </motion.a>
+        <div className="flex flex-wrap items-center justify-between gap-6 border-t border-rule pt-5">
+          <a href="#about" className="group label-mono flex items-center gap-3 text-text-muted hover:text-accent">
+            <span className="relative block h-8 w-px overflow-hidden bg-rule">
+              <span className="absolute inset-0 bg-accent animate-scroll-cue" />
+            </span>
+            Scroll
+            <FiArrowDown className="transition-transform duration-500 ease-editorial group-hover:translate-y-0.5" />
+          </a>
+
+          <div className="flex flex-wrap items-center gap-6">
+            <span className="label-mono flex items-center gap-2 text-text-muted">
+              <FiMapPin size={13} /> Bangkok, Thailand
+            </span>
+            <span aria-hidden="true" className="hidden h-4 w-px bg-rule sm:block" />
+            <div className="flex items-center gap-1">
+              {socials.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  aria-label={s.label}
+                  {...(s.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="flex h-10 w-10 items-center justify-center text-text-muted transition-all duration-300 hover:-translate-y-0.5 hover:text-accent"
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }
